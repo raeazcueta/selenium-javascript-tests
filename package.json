@@ -1,0 +1,22 @@
+{
+  "name": "acquire-selenium-js2",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "chromedriver": "^132.0.1",
+    "dotenv": "^16.4.7",
+    "webdriver-manager": "^12.1.9"
+  },
+  "devDependencies": {
+    "chai": "^5.1.2",
+    "selenium-webdriver": "^4.28.1"
+  }
+}
