@@ -1,10 +1,31 @@
+import dotenv from 'dotenv';
 import { Builder } from 'selenium-webdriver';
-import { Options } from 'selenium-webdriver/chrome.js';
 
 import ExceptionPage from '../poms/exception.js';
 
+dotenv.config();
+
+const capabilities = {
+    'bstack:options' : {
+        os: 'Windows',
+        osVersion: '10',
+        userName: process.env.BROWSERSTACK_USERNAME,
+        accessKey: process.env.BROWSERSTACK_ACCESS_KEY,
+        sessionName: 'Interactive test for NotInteractableException',
+        buildName: 'Exception Handling Selenium Tests',
+        projectName: 'Exception Handling Tests'
+    },
+    'browserName' : 'Chrome',
+    'browserVersion' : 'latest',
+    'browserstack.selenium_version': '3.14.0'
+};
+
 async function testElementNotInteractableException() {
-    const driver = await new Builder().forBrowser('chrome').setChromeOptions(new Options()).build();
+    const driver = new Builder()
+        .usingServer('https://hub-cloud.browserstack.com/wd/hub')
+        .withCapabilities(capabilities)
+        .build();
+    
     const exceptionPage = new ExceptionPage(driver);
 
     try {
@@ -27,8 +48,8 @@ async function testElementNotInteractableException() {
                 console.log("Second Save button was clicked successfully.");
                 await exceptionPage.findConfirmationMessage();
                 console.log("Element found with text 'Row 2 was saved'.");
+            }
         }
-    }
     } finally {
         await driver.quit();
         console.log("Test 2 passed successfully");

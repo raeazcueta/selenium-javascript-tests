@@ -1,13 +1,34 @@
 import { expect } from 'chai';
+import { config as dotenvConfig } from 'dotenv';
 import { Builder } from 'selenium-webdriver';
-import { Options } from 'selenium-webdriver/chrome.js';
 
 import ExceptionPage from '../poms/exception.js';
 
+dotenvConfig(); 
+
+
+const capabilities = {
+    'bstack:options': {
+        os: 'Windows',
+        osVersion: '10',
+        userName: process.env.BROWSERSTACK_USERNAME,
+        accessKey: process.env.BROWSERSTACK_ACCESS_KEY,
+        sessionName: 'Invalid Element State Exception Test',
+        buildName: 'UI Exception Testing',
+        projectName: 'Exception Handling Tests'
+    },
+    'browserName' : 'Chrome',
+    'browserVersion' : 'latest',
+    'browserstack.selenium_version': '3.14.0'
+};
+
 async function testInvalidElementStateException() {
-    const driver = await new Builder().forBrowser('chrome').setChromeOptions(new Options()).build();
+    const driver = new Builder()
+        .usingServer('https://hub-cloud.browserstack.com/wd/hub')
+        .withCapabilities(capabilities)
+        .build();
     const exceptionPage = new ExceptionPage(driver);
-    
+
     try {
         console.log("Navigating to the test page...");
         await exceptionPage.open();
@@ -39,3 +60,4 @@ async function testInvalidElementStateException() {
 }
 
 testInvalidElementStateException();
+
